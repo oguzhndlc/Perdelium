@@ -1,1 +1,6 @@
-console.log("Fonksiyon çalışıyor");
+exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Merhaba Netlify!" }),
+  };
+};

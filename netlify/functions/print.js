@@ -1,0 +1,1 @@
+console.log("Fonksiyon çalışıyor");

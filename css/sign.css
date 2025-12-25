@@ -1,0 +1,85 @@
+.container{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+/* Ana alan tam ortalanmış */
+.wrapper {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px; /* Görseldeki gibi geniş boşluk */
+}
+
+/* Kartlar */
+.card {
+    width: 450px; /* Görseldeki kart genişliği */
+    background: #cdb38b;
+    padding: 50px 40px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Label ve inputları hizala */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 16px;
+}
+
+input {
+    width: 100%;
+    background: aliceblue;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 12px;
+    margin-bottom: 25px;
+}
+
+/* Buton */
+.btn {
+    width: 60%;
+    display: block;
+    margin: 25px auto 0 auto;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #f3ab36;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #c58827;
+}
+
+.btn-link{
+    text-decoration: none;
+    color: black;
+}
+/* Mobil görünüm */
+@media(max-width: 992px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 50px;
+        height: auto;
+        padding: 50px 0;
+    }
+
+    .card {
+        width: 85%;
+    }
+}

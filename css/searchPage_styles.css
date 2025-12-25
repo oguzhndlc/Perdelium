@@ -1,0 +1,207 @@
+/* GENEL */
+body {
+    margin: 0;
+}
+
+/* HEADER BUTONLARI */
+.nav a, 
+.right-buttons a {
+    background: #0000FF;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+/* ------------------------------------------
+   SEARCH AREA - ANA KAPSAYICI
+------------------------------------------ */
+.search-area {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ARAMA ÇUBUĞU KUTUSU */
+.search-box {
+    width: 100%;
+    background: #ffffff;
+    padding: 15px 20px;
+    border-radius: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.search-box form {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 12px 18px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: #f2f2f2;
+}
+
+.search-box button {
+    padding: 12px 25px;
+    background: #0059ff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #003bbb;
+}
+
+/* ------------------------------------------
+   GELİŞMİŞ ARAMA BUTONU (ARA BUTONUNUN YANINDA)
+------------------------------------------ */
+.advanced-btn {
+    padding: 12px 20px;
+    background: #e96479;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    white-space: nowrap;
+}
+
+.advanced-btn:hover {
+    background: #ff8095;
+}
+
+/* ------------------------------------------
+   FİLTRE BÖLÜMÜ
+------------------------------------------ */
+#advancedFilters {
+    width: 100%;
+    display: none;
+    margin-top: 10px;
+}
+
+.filter-box {
+    width: 100%;
+    background: #ffe5ec;
+    padding: 20px;
+    border-radius: 18px;
+}
+
+/* Filtre formu yatay dizilim */
+#filterForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+/* Her filtre alanı */
+.filter-item {
+    flex: 1 1 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-item select,
+.filter-item input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 5px;
+    background: #fff;
+}
+
+/* Cinsiyet kutusu YAN YANA ve küçük */
+.gender-box {
+    display: flex;
+    gap: 8px;
+}
+
+.gender-box > div {
+    flex: 1 1 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Filtrele butonu artık küçük ve sağda */
+.filter-submit {
+    padding: 12px 20px;
+    border: none;
+    background: #e96479;
+    color: white;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+
+    /* blok olmaktan çıkarıyoruz */
+    flex: 0 0 auto;
+    height: fit-content;
+}
+
+.filter-submit:hover {
+    background: #ff8095;
+}
+
+/* ------------------------------------------
+   MOBİL UYUMLULUK
+------------------------------------------ */
+@media (max-width: 600px) {
+    #filterForm {
+        flex-direction: column;
+    }
+
+    .search-box form {
+        flex-direction: column;
+    }
+
+    .search-box button,
+    .advanced-btn {
+        width: 100%;
+    }
+}
+
+/* ------------------------------------------
+   İÇERİK LİSTESİ (RESULT CARDS)
+------------------------------------------ */
+.content-wrapper {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+    background: #cdb38b;
+    padding: 20px;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 15px;
+}
+
+.content-item {
+    background: #B6D49C;
+    padding: 30px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 22px;
+}

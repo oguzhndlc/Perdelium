@@ -110,21 +110,58 @@ function supabasesaid(text){
 
 /* ---------------- SUPABASE INSERT ---------------- */
 async function SupaBasesend() {
-  const name = document.getElementById("sendname").value.trim();
+  const nameInput = document.getElementById("sendname");
+  const name = nameInput.value.trim();
+
   if (!name) {
-    supabasesaid("İsim girmediniz");
+    alert("Lütfen bir isim giriniz!"); // veya kendi uyarı fonksiyonun
     return;
   }
 
-const res = await fetch("/api/users", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ name }),
-});
+  try {
+    const response = await fetch("/api/users/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name }),
+    });
 
-const text = await res.text();
-console.log("BACKEND RAW RESPONSE:", text);
+    if (response.ok) {
+      const result = await response.json();
+      console.log("Başarıyla kaydedildi:", result);
+      
+      // Giriş alanını temizle
+      nameInput.value = "";
+      
+      // Listeyi güncellemek için diğer fonksiyonunu çağırabilirsin
+      getsom(); 
+    } else {
+      const errorData = await response.json();
+      console.error("Sunucu hatası:", errorData);
+    }
+  } catch (error) {
+    console.error("İstek gönderilemedi:", error);
+  }
+}
 
+async function getsom(){
+  try {
+    // BURASI DÜZELTİLDİ: const response = ... eklendi
+    const response = await fetch("/api/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    // Önce hata var mı kontrol edelim
+    if (!response.ok) {
+        throw new Error(`HTTP hatası! Durum: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("API response:", data);
+    
+  } catch (error) {
+    console.error("Fetch hatası:", error);
+  }
 }
 
 /* ---------------- FILE UPLOAD ---------------- */

@@ -4,9 +4,13 @@ const router = express.Router();
 const fileController = require("../controllers/file.controller");
 
 // 👇 BU ŞART
-router.get("/", fileController.getFile);
+/*router.get("/", fileController.getFile);
 router.post("/", fileController.saveFile);
 router.delete("/", fileController.deleteFile);
-router.put("/", fileController.updateFile);
+router.put("/", fileController.updateFile);*/
+
+router.get("/files", (req, res) => {
+  res.json({ ok: true });
+});
 
 module.exports = router;

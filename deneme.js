@@ -116,14 +116,15 @@ async function SupaBasesend() {
     return;
   }
 
-  const res = await fetch("/api/users", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name }),
-  });
+const res = await fetch("/api/users/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ name }),
+});
 
-  const data = await res.json();
-  supabasesaid(data);
+const text = await res.text();
+console.log("BACKEND RAW RESPONSE:", text);
+
 }
 
 /* ---------------- FILE UPLOAD ---------------- */
@@ -141,7 +142,7 @@ async function upload() {
   reader.onload = async () => {
     const base64 = reader.result.split(",")[1];
 
-    const res = await fetch("/.netlify/functions/upload", {
+    const res = await fetch("/api/files", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

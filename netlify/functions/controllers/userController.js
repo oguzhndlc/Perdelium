@@ -1,36 +1,95 @@
-const supabase = require('../lib/supabase');
+const bcrypt = require("bcryptjs");
+const supabase = require("../lib/supabase");
 
-// Kullanıcıları Listele
-exports.getUser = async (req, res) => {
+exports.register = async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('users')
-      .select('id, created_at, name'); // Sadece var olan sütunları istiyoruz
+    const { email, username, password, name, surname } = req.body;
 
-    if (error) throw error;
-    res.status(200).json(data);
+    if (!email || !username || !password) {
+      return res.status(400).json({ error: "Zorunlu alanlar eksik" });
+    }
+
+    // 🔐 bcrypt hash
+    const password_hash = await bcrypt.hash(password, 10);
+
+    const { data, error } = await supabase
+      .from("users")
+      .insert([
+        {
+          email,
+          username,
+          password_hash,
+          name,
+          surname,
+        },
+      ])
+      .select();
+
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+
+    return res.status(201).json({
+      success: true,
+      user: data[0],
+    });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: "Server error",
+      message: err.message,
+    });
   }
 };
 
-// Kullanıcı Ekle
-exports.createUser = async (req, res) => {
+exports.login = async (req, res) => {
   try {
-    const { name } = req.body; // Frontend'den sadece name alıyoruz
+    const { identifier, password } = req.body;
+    // identifier = email OR username
 
-    if (!name) {
-      return res.status(400).json({ error: "İsim alanı boş olamaz." });
+    if (!identifier || !password) {
+      return res.status(400).json({
+        error: "Kullanıcı adı/email ve şifre zorunlu",
+      });
     }
 
-    const { data, error } = await supabase
-      .from('users')
-      .insert([{ name }]) // id ve created_at otomatik oluşacak
-      .select();
+    // 1️⃣ Email veya username ile kullanıcıyı bul
+    const { data: users, error } = await supabase
+      .from("users")
+      .select("*")
+      .or(`email.eq.${identifier},username.eq.${identifier}`)
+      .limit(1);
 
-    if (error) throw error;
-    res.status(201).json(data);
+    if (error || !users || users.length === 0) {
+      return res.status(401).json({
+        error: "Kullanıcı adı/email veya şifre hatalı",
+      });
+    }
+
+    const user = users[0];
+
+    // 2️⃣ Şifre kontrol
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        error: "Kullanıcı adı/email veya şifre hatalı",
+      });
+    }
+
+    // 3️⃣ Güvenlik
+    delete user.password_hash;
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.error("LOGIN ERROR:", err);
+    return res.status(500).json({
+      error: "Server error",
+      message: err.message,
+    });
   }
 };

@@ -56,11 +56,31 @@ function getcook() {
 }
 
 /* ---------------- LOGIN ---------------- */
-document.getElementById("LoginForm").addEventListener("submit", function (e) {
+document.getElementById("LoginForm").addEventListener("submit", async function (e) {
   e.preventDefault();
-  loginUser();
-});
 
+  const identifier = document.getElementById("identifier").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+    const res = await fetch("/api/users/signin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ identifier, password }),
+  });
+
+  const text = await res.text();
+  console.log("RAW:", text);
+
+  if (!res.ok) {
+    alert("Giriş başarısız");
+    return;
+  }
+
+  const data = JSON.parse(text);
+  console.log("LOGIN OK:", data);
+
+});
+/*
 function loginUser() {
   const user = getUserFromCookie();
   const name = document.getElementById("loginNameInput").value.trim();
@@ -76,8 +96,10 @@ function loginUser() {
     alert("Giriş Başarısız!");
   }
 }
+*/
 
-/* ---------------- USER FORM ---------------- */
+
+/* ---------------- USER FORM ---------------- 
 document.getElementById("userForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -103,7 +125,7 @@ document.getElementById("userForm").addEventListener("submit", async (e) => {
 
   nameInput.value = "";
 });
-
+*/
 function supabasesaid(text){
   console.log("Supabase:", text);
 }
@@ -111,27 +133,50 @@ function supabasesaid(text){
 /* ---------------- SUPABASE INSERT ---------------- */
 async function SupaBasesend() {
   const nameInput = document.getElementById("sendname");
+  const emailInput = document.getElementById("sendemail");
+  const surnameInput = document.getElementById("sendsurname");
+  const usernameInput = document.getElementById("sendusername");
+  const passwordInput = document.getElementById("sendpassword");
+  const confirmPasswordInput = document.getElementById("confirmpassword");
   const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const surname = surnameInput.value.trim();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  const confirmPassword = confirmPasswordInput.value.trim();
 
   if (!name) {
     alert("Lütfen bir isim giriniz!"); // veya kendi uyarı fonksiyonun
     return;
   }
-
+  if (!email) {
+    alert("Lütfen bir email giriniz!");
+    return;
+  }
+  if (!username) {
+    alert("Lütfen bir kullanıcı adı giriniz!");
+    return;
+  }
+  if (password==confirmPassword) {
   try {
-    const response = await fetch("/api/users/add", {
+    const response = await fetch("/api/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name }),
+      body: JSON.stringify({ name: name, 
+        email: email, 
+        surname: surname, 
+        username: username, 
+        password: password}),
     });
 
     if (response.ok) {
       const result = await response.json();
       console.log("Başarıyla kaydedildi:", result);
-      
-      // Giriş alanını temizle
+
+      // Giriş alanlarını temizle
       nameInput.value = "";
-      
+      emailInput.value = "";
+
       // Listeyi güncellemek için diğer fonksiyonunu çağırabilirsin
       getsom(); 
     } else {
@@ -141,8 +186,10 @@ async function SupaBasesend() {
   } catch (error) {
     console.error("İstek gönderilemedi:", error);
   }
+} else {
+  alert("Şifreler eşleşmiyor!");
 }
-
+}
 async function getsom(){
   try {
     // BURASI DÜZELTİLDİ: const response = ... eklendi

@@ -9,8 +9,9 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: "Zorunlu alanlar eksik" });
     }
 
-    // 🔐 bcrypt hash
-    const password_hash = await bcrypt.hash(password, 10);
+// const password_hash = await bcrypt.hash(password, 10);
+const password_hash = password; // TEST AMAÇLI
+
 
     const { data, error } = await supabase
       .from("users")

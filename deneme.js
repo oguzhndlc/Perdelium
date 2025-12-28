@@ -11,7 +11,7 @@ async function saveData(getid, getname) {
   document.cookie =
     "user=" +
     encodeURIComponent(JSON.stringify(user)) +
-    "; path=/; max-age=86400";
+    "; path=/;";
 
   const response = await fetch("/.netlify/functions/api/saveUser", {
     method: "POST",
@@ -69,6 +69,8 @@ document.getElementById("LoginForm").addEventListener("submit", async function (
   });
 
   const text = await res.text();
+  const data = JSON.parse(text);
+
   console.log("RAW:", text);
 
   if (!res.ok) {
@@ -76,9 +78,9 @@ document.getElementById("LoginForm").addEventListener("submit", async function (
     return;
   }
 
-  const data = JSON.parse(text);
   console.log("LOGIN OK:", data);
-
+  localStorage.setItem("user", JSON.stringify(data.user));
+  alert("Giriş başarılı! Hoşgeldin, " + data.user.name);
 });
 /*
 function loginUser() {

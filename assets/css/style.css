@@ -279,3 +279,15 @@
   border-radius: 14px;
   box-shadow: 0 20px 40px rgba(0,0,0,.6);
 }
+.profile-card h3 {
+  color: var(--accent-gold);
+  margin-bottom: 20px;
+}
+.profile-card {
+  margin-bottom: 30px;
+}
+/* Profil düzenleme animasyonu */
+#profileEditCard {
+  transition: all 0.3s ease;
+}
+

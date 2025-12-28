@@ -82,6 +82,7 @@ if (loginForm) {
   } catch (error) {
     console.error("İstek gönderilemedi:", error);
   }
+        window.location.href = "/pages/login.html";
 
     });
   }

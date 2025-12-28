@@ -75,7 +75,6 @@ if (loginForm) {
     if (response.ok) {
       const result = await response.json();
       console.log("Başarıyla kaydedildi:", result);
-        window.location.href = "/pages/login.html";
     } else {
       const errorData = await response.json();
       console.error("Sunucu hatası:", errorData);

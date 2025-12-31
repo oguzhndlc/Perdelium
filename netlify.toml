@@ -10,3 +10,8 @@
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
+
+[dev]
+  framework = "#static"
+  command = "echo dev"
+  targetPort = 3999

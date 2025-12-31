@@ -135,3 +135,65 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const {
+      user_id,      // zorunlu
+      phone,
+      avatar_url,
+      about,
+      insta_link,
+      web_link,
+    } = req.body;
+
+    if (!user_id) {
+      return res.status(400).json({
+        error: "user_id zorunludur",
+      });
+    }
+
+    // 🔄 Güncellenecek alanları dinamik oluştur
+    const updateData = {};
+    if (phone !== undefined) updateData.phone = phone;
+    if (avatar_url !== undefined) updateData.avatar_url = avatar_url;
+    if (about !== undefined) updateData.about = about;
+    if (insta_link !== undefined) updateData.insta_link = insta_link;
+    if (web_link !== undefined) updateData.web_link = web_link;
+
+    updateData.updated_at = new Date();
+
+    // 🚫 Güncellenecek alan yoksa
+    if (Object.keys(updateData).length === 1) {
+      return res.status(400).json({
+        error: "Güncellenecek veri yok",
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("user_profiles")
+      .update(updateData)
+      .eq("user_id", user_id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        error: "Profil güncellenemedi",
+        details: error.message,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      profile: data,
+    });
+
+  } catch (err) {
+    console.error("UPDATE PROFILE ERROR:", err);
+    return res.status(500).json({
+      error: "Server error",
+      message: err.message,
+    });
+  }
+};

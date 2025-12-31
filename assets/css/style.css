@@ -234,7 +234,15 @@
   padding: 60px 0;
 }
 
+.profile-container {
+  max-width: 800px;
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
 .profile-card {
+  margin-right: 45px;
+  margin-bottom: 30px;
   max-width: 500px;
   background-color: var(--bg-card);
   padding: 30px;
@@ -245,6 +253,49 @@
 .profile-card p {
   font-size: 1.1rem;
 }
+
+.profile-card h3 {
+  color: var(--accent-gold);
+  margin-bottom: 20px;
+}
+/* Profil düzenleme animasyonu */
+#profileEditCard {
+  transition: all 0.3s ease;
+}
+
+#profileEditForm {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin-top: 20px;
+}
+
+#profileEditForm button {
+  margin: 20px;
+  grid-row: span 2 ;
+  margin-top: 20px;
+  height: fit-content;
+  padding: 15px;
+}
+
+.profile-avatar-border {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a24d, #a67c2e);
+  transition: all 0.3s ease;
+  margin:10px;
+}
+.profile-avatar-border:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(201, 162, 77, 0.6);
+}
+.profile-avatar {
+  width: 205px;
+  height: 205px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 /* =========================
    ESER YÖNETİMİ
 ========================= */
@@ -279,15 +330,3 @@
   border-radius: 14px;
   box-shadow: 0 20px 40px rgba(0,0,0,.6);
 }
-.profile-card h3 {
-  color: var(--accent-gold);
-  margin-bottom: 20px;
-}
-.profile-card {
-  margin-bottom: 30px;
-}
-/* Profil düzenleme animasyonu */
-#profileEditCard {
-  transition: all 0.3s ease;
-}
-

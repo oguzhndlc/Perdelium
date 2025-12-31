@@ -49,6 +49,7 @@ function renderNavbarAuth() {
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("user");
+      localStorage.removeItem("user_profiles");
       location.reload();
     });
 

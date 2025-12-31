@@ -9,7 +9,11 @@ document.getElementById("profileName").textContent = user.name;
 
 // Formu doldur
 document.getElementById("editName").value = user.name;
+document.getElementById("editSurname").value = user.surname;
 document.getElementById("editUsername").value = user.username;
+document.getElementById("editEmail").value = user.email;
+document.getElementById("editPhone").value = user.phone;
+
 
 const editBtn = document.getElementById("editProfileBtn");
 const editCard = document.getElementById("profileEditCard");

@@ -12,7 +12,8 @@ exports.register = async (req, res) => {
     // 🔐 bcrypt hash
     const password_hash = await bcrypt.hash(password, 10);
 
-    const { data, error } = await supabase
+    // 1️⃣ USER OLUŞTUR
+    const { data: usersData, error: userError } = await supabase
       .from("users")
       .insert([
         {
@@ -23,15 +24,39 @@ exports.register = async (req, res) => {
           surname,
         },
       ])
-      .select();
+      .select()
+      .single();
 
-    if (error) {
-      return res.status(500).json({ error: error.message });
+    if (userError) {
+      return res.status(500).json({ error: userError.message });
+    }
+
+    // 2️⃣ PROFILE OLUŞTUR (SADECE ID + USER_ID)
+const { data: profileData, error: profileError } = await supabase
+  .from("user_profiles")
+  .insert([
+    {
+      id: usersData.id,
+      user_id: usersData.id,
+    },
+  ])
+  .select()
+  .single();
+
+console.log("PROFILE DATA:", profileData);
+console.log("PROFILE ERROR:", profileError);
+
+    if (profileError) {
+      return res.status(500).json({
+        error: "Profil oluşturulamadı",
+        details: profileError.message,
+      });
     }
 
     return res.status(201).json({
       success: true,
-      user: data[0],
+      user: usersData,
+      profile: profileData,
     });
 
   } catch (err) {
@@ -45,7 +70,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { identifier, password } = req.body;
-    // identifier = email OR username
 
     if (!identifier || !password) {
       return res.status(400).json({
@@ -53,10 +77,28 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 1️⃣ Email veya username ile kullanıcıyı bul
+    // 1️⃣ User + Profile birlikte çek
     const { data: users, error } = await supabase
       .from("users")
-      .select("*")
+      .select(`
+        id,
+        email,
+        username,
+        name,
+        surname,
+        password_hash,
+        created_at,
+        user_profiles (
+          id,
+          phone,
+          avatar_url,
+          about,
+          insta_link,
+          web_link,
+          created_at,
+          updated_at
+        )
+      `)
       .or(`email.eq.${identifier},username.eq.${identifier}`)
       .limit(1);
 

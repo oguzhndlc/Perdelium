@@ -24,6 +24,7 @@ if (loginForm) {
     return;
   }
   localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("user_profiles", JSON.stringify(data.user_profiles));
     window.location.href = "/index.html";
   });
 }
@@ -82,7 +83,6 @@ if (loginForm) {
   } catch (error) {
     console.error("İstek gönderilemedi:", error);
   }
-        window.location.href = "/pages/login.html";
 
     });
   }
